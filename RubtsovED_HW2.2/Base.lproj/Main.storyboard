@@ -78,6 +78,9 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="CSG-ke-NYp">
                                                 <rect key="frame" x="156" y="0.0" width="228" height="31"/>
+                                                <connections>
+                                                    <action selector="greenSliderAction" destination="BYZ-38-t0r" eventType="valueChanged" id="yH7-uj-Da7"/>
+                                                </connections>
                                             </slider>
                                         </subviews>
                                     </stackView>
@@ -104,6 +107,9 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="oy8-zr-FzH">
                                                 <rect key="frame" x="156" y="0.0" width="228" height="31"/>
+                                                <connections>
+                                                    <action selector="blueSliderAction" destination="BYZ-38-t0r" eventType="valueChanged" id="Umw-VF-hq6"/>
+                                                </connections>
                                             </slider>
                                         </subviews>
                                     </stackView>

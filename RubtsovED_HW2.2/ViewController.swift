@@ -38,14 +38,24 @@ class ViewController: UIViewController {
         blueSlider.tintColor = .blue
         
         labelRed.text = String(redSlider.value)
+        labelGreen.text = String(greenSlider.value)
+        labelBlue.text = String(blueSlider.value)
+        
     }
 
     @IBAction func redSliderAction() {
         labelRed.text = String(format: "%.2f", redSlider.value)
         changeColor()
-        
+    }
     
-
+    @IBAction func greenSliderAction() {
+        labelGreen.text = String(format: "%.2f", greenSlider.value)
+        changeColor()
+    }
+    
+    @IBAction func blueSliderAction() {
+        labelBlue.text = String(format: "%.2f", blueSlider.value)
+        changeColor()
     }
     
     private func changeColor() {
