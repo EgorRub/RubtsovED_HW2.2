@@ -9,11 +9,49 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var viewColor: UIView!
+    @IBOutlet weak var labelRed: UILabel!
+    @IBOutlet weak var labelGreen: UILabel!
+    @IBOutlet weak var labelBlue: UILabel!
+    @IBOutlet weak var redSlider: UISlider!
+    @IBOutlet weak var greenSlider: UISlider!
+    @IBOutlet weak var blueSlider: UISlider!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        viewColor.layer.cornerRadius = 10
+        
+        redSlider.value = 1
+        redSlider.minimumValue = 0
+        redSlider.maximumValue = 1
+        redSlider.tintColor = .red
+        
+        greenSlider.value = 1
+        greenSlider.minimumValue = 0
+        greenSlider.maximumValue = 1
+        greenSlider.tintColor = .green
+        
+        blueSlider.value = 1
+        blueSlider.minimumValue = 0
+        blueSlider.maximumValue = 1
+        blueSlider.tintColor = .blue
+        
+        labelRed.text = String(redSlider.value)
     }
 
+    @IBAction func redSliderAction() {
+        labelRed.text = String(format: "%.2f", redSlider.value)
+        changeColor()
+        
+    
 
-}
+    }
+    
+    private func changeColor() {
+        viewColor.backgroundColor = UIColor(red: CGFloat((redSlider.value)), green: CGFloat((greenSlider.value)), blue: CGFloat((blueSlider.value)), alpha: 1)
+        
+        }
+    }
+    
 
