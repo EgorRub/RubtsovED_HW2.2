@@ -10,9 +10,11 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var viewColor: UIView!
+    
     @IBOutlet weak var labelRed: UILabel!
     @IBOutlet weak var labelGreen: UILabel!
     @IBOutlet weak var labelBlue: UILabel!
+    
     @IBOutlet weak var redSlider: UISlider!
     @IBOutlet weak var greenSlider: UISlider!
     @IBOutlet weak var blueSlider: UISlider!
@@ -59,7 +61,11 @@ class ViewController: UIViewController {
     }
     
     private func changeColor() {
-        viewColor.backgroundColor = UIColor(red: CGFloat((redSlider.value)), green: CGFloat((greenSlider.value)), blue: CGFloat((blueSlider.value)), alpha: 1)
+        viewColor.backgroundColor = UIColor(
+            red: CGFloat((redSlider.value)),
+            green: CGFloat((greenSlider.value)),
+            blue: CGFloat((blueSlider.value)),
+            alpha: 1)
         
         }
     }
