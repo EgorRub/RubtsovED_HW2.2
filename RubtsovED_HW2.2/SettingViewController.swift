@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class SettingViewController: UIViewController {
 
     @IBOutlet weak var viewColor: UIView!
     
@@ -18,6 +18,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var redSlider: UISlider!
     @IBOutlet weak var greenSlider: UISlider!
     @IBOutlet weak var blueSlider: UISlider!
+    
+    @IBOutlet weak var redSliderTF: UITextField!
+    @IBOutlet weak var greenSliderTF: UITextField!
+    @IBOutlet weak var blueSliderTF: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,16 +53,23 @@ class ViewController: UIViewController {
     @IBAction func redSliderAction() {
         labelRed.text = String(format: "%.2f", redSlider.value)
         changeColor()
+        redSliderTF.text = labelRed.text
     }
     
     @IBAction func greenSliderAction() {
         labelGreen.text = String(format: "%.2f", greenSlider.value)
         changeColor()
+        greenSliderTF.text = labelGreen.text
     }
     
     @IBAction func blueSliderAction() {
         labelBlue.text = String(format: "%.2f", blueSlider.value)
         changeColor()
+        blueSliderTF.text = labelBlue.text
+    }
+    
+    @IBAction func doneButtonPressed() {
+        
     }
     
     private func changeColor() {
