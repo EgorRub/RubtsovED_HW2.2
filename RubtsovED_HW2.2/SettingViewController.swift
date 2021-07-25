@@ -24,6 +24,9 @@ class SettingViewController: UIViewController {
     @IBOutlet weak var blueSliderTF: UITextField!
     
     
+    var delegate: SettingViewControllerDelegate!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +51,10 @@ class SettingViewController: UIViewController {
         labelGreen.text = String(greenSlider.value)
         labelBlue.text = String(blueSlider.value)
         
+        redSliderTF.delegate = self
+        greenSliderTF.delegate = self
+        blueSliderTF.delegate = self
+        
     }
 
     @IBAction func redSliderAction() {
@@ -69,17 +76,29 @@ class SettingViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed() {
-        
+        view.endEditing(true)
+        delegate.setNewColor(color: viewColor.backgroundColor ?? .white)
+        dismiss(animated: true)
     }
-    
+    }
+
+extension SettingViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let newValue = textField.text else { return }
+        guard let numberValue = Float(newValue) else { return }
+        if textField == redSliderTF {
+            redSlider.value = numberValue
+        } else if textField == greenSliderTF {
+            greenSlider.value = numberValue
+        } else if textField == blueSliderTF {
+            blueSlider.value = numberValue
+        }
+}
     private func changeColor() {
         viewColor.backgroundColor = UIColor(
             red: CGFloat((redSlider.value)),
             green: CGFloat((greenSlider.value)),
             blue: CGFloat((blueSlider.value)),
             alpha: 1)
-        
         }
-    }
-    
-
+}
