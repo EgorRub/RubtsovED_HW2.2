@@ -24,55 +24,44 @@ class SettingViewController: UIViewController {
     @IBOutlet weak var blueSliderTF: UITextField!
     
     
-    var delegate: SettingViewControllerDelegate!
+    var delegate: ColorViewControllerDelegate!
+    var color: UIColor!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewColor.layer.cornerRadius = 10
-        
-        redSlider.value = 1
-        redSlider.minimumValue = 0
-        redSlider.maximumValue = 1
         redSlider.tintColor = .red
-        
-        greenSlider.value = 1
-        greenSlider.minimumValue = 0
-        greenSlider.maximumValue = 1
         greenSlider.tintColor = .green
         
-        blueSlider.value = 1
-        blueSlider.minimumValue = 0
-        blueSlider.maximumValue = 1
-        blueSlider.tintColor = .blue
+        setMinMaxValue(for: redSlider, greenSlider, blueSlider)
+        setSliders()
         
-        labelRed.text = String(redSlider.value)
-        labelGreen.text = String(greenSlider.value)
-        labelBlue.text = String(blueSlider.value)
-        
-        redSliderTF.delegate = self
-        greenSliderTF.delegate = self
-        blueSliderTF.delegate = self
+        setValue(for: labelRed, labelGreen, labelBlue)
+        setTextFieldValue(for: redSliderTF, greenSliderTF, blueSliderTF)
         
     }
 
     @IBAction func redSliderAction() {
         labelRed.text = String(format: "%.2f", redSlider.value)
         changeColor()
-        redSliderTF.text = labelRed.text
+        setValue(for: labelRed)
+        setTextFieldValue(for: redSliderTF)
     }
     
     @IBAction func greenSliderAction() {
         labelGreen.text = String(format: "%.2f", greenSlider.value)
         changeColor()
-        greenSliderTF.text = labelGreen.text
+        setValue(for: labelGreen)
+        setTextFieldValue(for: greenSliderTF)
     }
     
     @IBAction func blueSliderAction() {
         labelBlue.text = String(format: "%.2f", blueSlider.value)
         changeColor()
-        blueSliderTF.text = labelBlue.text
+        setValue(for: labelBlue)
+        setTextFieldValue(for: blueSliderTF)
     }
     
     @IBAction func doneButtonPressed() {
@@ -80,20 +69,10 @@ class SettingViewController: UIViewController {
         delegate.setNewColor(color: viewColor.backgroundColor ?? .white)
         dismiss(animated: true)
     }
-    }
-
-extension SettingViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let newValue = textField.text else { return }
-        guard let numberValue = Float(newValue) else { return }
-        if textField == redSliderTF {
-            redSlider.value = numberValue
-        } else if textField == greenSliderTF {
-            greenSlider.value = numberValue
-        } else if textField == blueSliderTF {
-            blueSlider.value = numberValue
-        }
+    
 }
+extension SettingViewController {
+    
     private func changeColor() {
         viewColor.backgroundColor = UIColor(
             red: CGFloat((redSlider.value)),
@@ -101,4 +80,105 @@ extension SettingViewController: UITextFieldDelegate {
             blue: CGFloat((blueSlider.value)),
             alpha: 1)
         }
+    private func setSliders() {
+            let ciColor = CIColor(color: color)
+            redSlider.value = Float(ciColor.red)
+            greenSlider.value = Float(ciColor.green)
+            blueSlider.value = Float(ciColor.blue)
+        }
+    
+    
+    private func setMinMaxValue(for sliders: UISlider...) {
+        
+        sliders.forEach { slider in
+            slider.value = 1
+            slider.minimumValue = 0
+            slider.maximumValue = 1
+        }
+    }
+    
+    
+    private func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
+    }
+    
+    @objc private func didTapButton() {
+        view.endEditing(true)
+    }
+    
+    private func setValue(for labels: UILabel...) {
+        labels.forEach { label in
+            switch label {
+            case labelRed:
+                label.text = string(from: redSlider)
+            case labelGreen:
+                label.text = string(from: greenSlider)
+            default:
+                label.text = string(from: blueSlider)
+            }
+        }
+    }
+    
+    private func setTextFieldValue(for textFields: UITextField...) {
+        textFields.forEach { textField in
+            switch textField {
+            case redSliderTF:
+                textField.text = string(from: redSlider)
+            case greenSliderTF:
+                textField.text = string(from: greenSlider)
+            default:
+                textField.text = string(from: blueSlider)
+            }
+        }
+    }
+}
+
+extension SettingViewController: UITextFieldDelegate {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        
+        if let currentValue = Float(text) {
+            switch textField {
+            case redSliderTF:
+                redSlider.setValue(currentValue, animated: true)
+                setValue(for: labelRed)
+            case greenSliderTF:
+                greenSlider.setValue(currentValue, animated: true)
+                setValue(for: labelGreen)
+            default:
+                blueSlider.setValue(currentValue, animated: true)
+                setValue(for: labelBlue)
+            }
+            
+            changeColor()
+            return
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let keyboardToolBar = UIToolbar()
+        textField.inputAccessoryView = keyboardToolBar
+        keyboardToolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(
+            title: "Done",
+            style: .done,
+            target: self,
+            action: #selector(didTapButton)
+        )
+        
+        let flexBarButton = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil
+        )
+        
+        keyboardToolBar.items = [flexBarButton, doneButton]
+    }
 }
